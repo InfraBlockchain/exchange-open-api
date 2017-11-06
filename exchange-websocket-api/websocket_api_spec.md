@@ -1455,7 +1455,7 @@ to all the token event subscribers through active websocket connections that hav
 | **e**​ | event data |
 | **ty**​ | token event type ('OB' : Order-Buy) |
 | **p** | Asset-Share token price in trading currency unit (dUSD, 6 decimals big integer) |
-| **t**​ | Asset-Share token amount ordered |
+| **t**​ | Asset-Share token amount newly added to buy-order-book |
 | **ts** | timestamp of buy-order transaction |
 
 
@@ -1483,7 +1483,7 @@ to all the token event subscribers through active websocket connections that hav
 | **e**​ | event data |
 | **ty**​ | token event type ('OS' : Order-Sell) |
 | **p** | Asset-Share token price in trading currency unit (dUSD, 6 decimals big integer) |
-| **t**​ | Asset-Share token amount ordered |
+| **t**​ | Asset-Share token amount newly added to buy-order-book |
 | **ts** | timestamp of sell-order transaction |
 
 
