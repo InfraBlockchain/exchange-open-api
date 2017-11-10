@@ -1496,7 +1496,7 @@ to all the token event subscribers through active websocket connections that hav
   "t" : "S_TE",
   "sy" : "AS_PC_GN",
   "e" : {
-    "tx" : "TB",
+    "ty" : "TB",
     "p" : "62500000",
     "t" : "15",
     "ts" : 1509891917020
@@ -1524,7 +1524,7 @@ to all the token event subscribers through active websocket connections that hav
   "t" : "S_TE",
   "sy" : "AS_PC_GN",
   "e" : {
-    "tx" : "TS",
+    "ty" : "TS",
     "p" : "63700000",
     "t" : "75",
     "ts" : 1509896359286
