@@ -1,20 +1,26 @@
 ModernArt Websocket API spec
 ===
-(revision 20171106)
+(revision 20171116)
 
 #### **_akka-actor-based event-driven exchange server cluster implementation_**
 
-ModernArt Websocket Server Location
+Websocket URL
 ---
+  * ws://`<address`>:`<port`>/ws/ETHEREUM_ADDRESS
+  * ETHEREUM_ADDRESS must start with 0x
 
-* test server : [ws://alphama.artstockx.com/ws/ETHEREUM_ADDRESS](ws://alphama.artstockx.com/ws/ETHEREUM_ADDRESS)
+Websocket Test URL
+----
+  * [ws://alphama.artstockx.com/ws/ETHEREUM_ADDRESS](ws://alphama.artstockx.com/ws/ETHEREUM_ADDRESS)
+  * [ws://beta-dev-ma.yosemitelabs.org/ws/ETHEREUM_ADDRESS](ws://beta-dev-ma.yosemitelabs.org/ws/ETHEREUM_ADDRESS)
 
-
-Websocket Test Page
+Websocket Test Page (HTTP)
 ---
 
 * test server : [**http://alphama.artstockx.com/websocketTest/ETHEREUM_ADDRESS**](http://alphama.artstockx.com/websocketTest/ETHEREUM_ADDRESS)
+* test server : [**http://beta-dev-ma.yosemitelabs.org/websocketTest/ETHEREUM_ADDRESS**](http://beta-dev-ma.yosemitelabs.org/websocketTest/ETHEREUM_ADDRESS)
 * eg) [http://alphama.artstockx.com/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8](http://alphama.artstockx.com/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8)
+* eg) [http://beta-dev-ma.yosemitelabs.org/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8](http://alphama.artstockx.com/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8)
 
 Authentication
 ---
@@ -118,7 +124,7 @@ Exchange Transaction APIs
     "tt" : "OB",
     "ea" : "0x5677e23889387f0d0e774f2e930e91bcee9dcaa6",
     "sy" : "AS_PC_GN",
-    "am" : "50",
+    "am" : "5000000000",
     "pr" : "52100000",
     "mfr" : 10,
     "tfr" : 20,
@@ -133,9 +139,9 @@ Exchange Transaction APIs
 | **xa**​ | exchange Ethereum smart contract address (Exchange Vault) identifying the exchange server |
 | **tt**​ | transaction type (‘OB’ : Order Buy, ‘OS’ : Order Sell, ‘TB’ : Trade-Buy, ‘TS’ : Trade-Sell, ‘CB’ : Cancel-Buy, ‘CS’ : Cancel-Sell, ‘WR’ : Withdrawal-Request, ‘CWR’ : Cancel-Withdrawal-Request, ‘WC’ : Withdrawal-Confirm) |
 | **ea​** | user’s Ethereum account address |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) |
-| **am**​ | Asset-Share token amount |
-| **pr​** | dUSD price for 1 Asset-Share (6 decimals big integer) |
+| **sy**​ | Asset token symbol (id for an Asset token type) |
+| **am**​ | Asset token amount |
+| **pr​** | trading currency price for 1 Asset token |
 | **mfr**​ | maker fee rate (unit in percentage(0-100) multiplied by 100 (0(0%)-10000(100%), ex: 102 = 1.02%, 10 = 0.1%) |
 | **tfr**​ | taker fee rate (same unit as ‘mfr’) |
 | **ts** | client timestamp at which transaction message is made |
@@ -151,7 +157,9 @@ Exchange Transaction APIs
    "r" : {
       "res" : "OK",
       "bI" : "QmdChdLRoCQi5BjfSG3QXvgHW5rLAGsqUJVcpAbX3QZ9Sp",
-      "uf" : "30"
+      "uf" : "3000000000",
+      "cS" : "1044084000",
+      "cL" : "1564563000"
    }
 }
 ```
@@ -160,6 +168,8 @@ Exchange Transaction APIs
 | :---: | --- |
 | **bI** | buy order id (IPFS hash address of buy order message json file) |
 | **uf** | unfilled token amount |
+| **cS** | trading currency amount spent for the immediate order fill (taking sell order) including taker transaction fee |
+| **cL** | trading currency amount locked for open order (price*tokenAmountUnfilled + makerTransactionFee) |
 
 Response codes (res)
 * InvalidExchangeContractAddress
@@ -172,7 +182,7 @@ Response codes (res)
 * BuyOrderJsIPFSFailed
 * AlreadyProcessed
 * NoETHAccount
-* NotEnoughASD
+* NotEnoughTradingCurrency
 
 
 ### PlaceSellOrder API \[OS\] (OrderSell)
@@ -188,7 +198,7 @@ Response codes (res)
     "tt" : "OS",
     "ea" : "0x5677e23889387f0d0e774f2e930e91bcee9dcaa6",
     "sy" : "AS_PC_GN",
-    "am" : "5",
+    "am" : "500000000",
     "pr" : "55800000",
     "mfr" : 10,
     "tfr" : 20,
@@ -203,9 +213,9 @@ Response codes (res)
 | **xa**​ | exchange Ethereum smart contract address (Exchange Vault) identifying the exchange server |
 | **tt**​ | transaction type (‘OB’ : Order Buy, ‘OS’ : Order Sell, ‘TB’ : Trade-Buy, ‘TS’ : Trade-Sell, ‘CB’ : Cancel-Buy, ‘CS’ : Cancel-Sell, ‘WR’ : Withdrawal-Request, ‘CWR’ : Cancel-Withdrawal-Request, ‘WC’ : Withdrawal-Confirm) |
 | **ea​** | user’s Ethereum account address |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) |
-| **am**​ | Asset-Share token amount |
-| **pr​** | dUSD price for 1 Asset-Share (6 decimals big integer) |
+| **sy**​ | Asset token symbol (id for an Asset token type) |
+| **am**​ | Asset token amount |
+| **pr​** | trading currency price for 1 Asset token |
 | **mfr**​ | maker fee rate (unit in percentage(0-100) multiplied by 100 (0(0%)-10000(100%), ex: 102 = 1.02%, 10 = 0.1%) |
 | **tfr**​ | taker fee rate (same unit as ‘mfr’) |
 | **ts** | client timestamp at which transaction message is made |
@@ -220,7 +230,8 @@ Response codes (res)
    "r" : {
       "res" : "OK",
       "sI" : "QmQySFBQfu7eASiYFZCL2VXCMjJNsXZfrmwZW1eNNDXUXP",
-      "uf" : "5"
+      "uf" : "200000000",
+      "cE" : "1640520000"
    }
 }
 ```
@@ -229,6 +240,7 @@ Response codes (res)
 | :---: | --- |
 | **sI** | sell order id (IPFS hash address of sell order message json file) |
 | **uf** | unfilled token amount |
+| **cE** | trading currency amount earned by the immediate order fill (taking buy order) excluding taker transaction fee |
 
 Response codes (res)
 * InvalidExchangeContractAddress
@@ -242,7 +254,7 @@ Response codes (res)
 * AlreadyProcessed
 * NoETHAccount
 * NotEnoughToken
-* NotEnoughASD
+* NotEnoughTradingCurrency
 
 
 
@@ -271,7 +283,7 @@ Response codes (res)
 | **xa**​ | exchange Ethereum smart contract address (Exchange Vault) identifying the exchange server |
 | **tt**​ | transaction type (‘OB’ : Order Buy, ‘OS’ : Order Sell, ‘TB’ : Trade-Buy, ‘TS’ : Trade-Sell, ‘CB’ : Cancel-Buy, ‘CS’ : Cancel-Sell, ‘WR’ : Withdrawal-Request, ‘CWR’ : Cancel-Withdrawal-Request, ‘WC’ : Withdrawal-Confirm) |
 | **ea​** | user’s Ethereum account address |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) |
+| **sy**​ | Asset token symbol (id for an Asset type) |
 | **bI** | buy-order-id to cancel |
 | **ts** | client timestamp at which transaction message is made |
 | **si**​ | crypto signature signed by the user’s Ethereum account for transaction message (tightly packed (no whitespace) stringified json object) |
@@ -286,7 +298,8 @@ Response codes (res)
       "res" : "OK",
       "cI" : "QmQivaSWXPxUeTRJhVdk96ker4tVWRuEkBEfXUAAE99vjh",
       "p" : "52100000",
-      "uf" : "15"
+      "uf" : "1500000000",
+      "cU" : "789315000"
    }
 }
 ```
@@ -294,8 +307,9 @@ Response codes (res)
 | field | description |
 | :---: | --- |
 | **cI** | cancel order id (IPFS hash address of cancel order message json file) |
-| **p** | dUSD price for 1 Asset-Share (6 decimals big integer) |
+| **p** | trading currency price for 1 Asset token |
 | **uf** | unfilled token amount |
+| **cU** | trading currency amount unlocked from canceled buy order |
 
 Response codes (res)
 * InvalidExchangeContractAddress
@@ -336,7 +350,7 @@ Response codes (res)
 | **xa**​ | exchange Ethereum smart contract address (Exchange Vault) identifying the exchange server |
 | **tt**​ | transaction type (‘OB’ : Order Buy, ‘OS’ : Order Sell, ‘TB’ : Trade-Buy, ‘TS’ : Trade-Sell, ‘CB’ : Cancel-Buy, ‘CS’ : Cancel-Sell, ‘WR’ : Withdrawal-Request, ‘CWR’ : Cancel-Withdrawal-Request, ‘WC’ : Withdrawal-Confirm) |
 | **ea​** | user’s Ethereum account address |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) |
+| **sy**​ | Asset token symbol (id for an Asset token type) |
 | **sI** | sell-order id to cancel |
 | **ts** | client timestamp at which transaction message is made |
 | **si**​ | crypto signature signed by the user’s Ethereum account for transaction message (tightly packed (no whitespace) stringified json object) |
@@ -351,7 +365,7 @@ Response codes (res)
       "res" : "OK",
       "cI" : "QmPx7bz1Pu5UyQS1aat9o6MikdUqPd4LwMH88f2Gv1fLhy",
       "p" : "55800000",
-      "uf" : "5"
+      "uf" : "500000000"
    }
 }
 ```
@@ -359,7 +373,7 @@ Response codes (res)
 | field | description |
 | :---: | --- |
 | **cI** | cancel order id (IPFS hash address of cancel order message json file) |
-| **p** | dUSD price for 1 Asset-Share (6 decimals big integer) |
+| **p** | trading currency price for 1 Asset token |
 | **uf** | unfilled token amount |
 
 Response codes (res)
@@ -389,7 +403,7 @@ Response codes (res)
     "xa" : "0x33e50109a188cdbf976c60fb93e34119cba0a088",
     "tt" : "WR",
     "ea" : "0x5677e23889387f0d0e774f2e930e91bcee9dcaa6",
-    "sy" : "ASD",
+    "sy" : "TC",
     "am" : "3000000000",
     "txF" : "500000",
     "ts" : 1508401521096,
@@ -403,9 +417,9 @@ Response codes (res)
 | **xa**​ | exchange Ethereum smart contract address (Exchange Vault) identifying the exchange server |
 | **tt**​ | transaction type (‘OB’ : Order Buy, ‘OS’ : Order Sell, ‘TB’ : Trade-Buy, ‘TS’ : Trade-Sell, ‘CB’ : Cancel-Buy, ‘CS’ : Cancel-Sell, ‘WR’ : Withdrawal-Request, ‘CWR’ : Cancel-Withdrawal-Request, ‘WC’ : Withdrawal-Confirm) |
 | **ea​** | user’s Ethereum account address |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) or ‘dUSD’ |
-| **am**​ | Asset-Share token amount or dUSD amount (6 decimals big integer, 1 dUSD = 1000000, 30.5 dUSD = 30500000) |
-| **txF** | transaction fee dUSD amount in a Withdrawal-Request transaction (6 decimals big integer) |
+| **sy**​ | Asset token symbol (id for an Asset token type) or ‘TC’(Trading Currency) |
+| **am**​ | Asset token amount or trading currency amount |
+| **txF** | transaction fee trading currency amount in a Withdrawal-Request transaction |
 | **ts** | client timestamp at which transaction message is made |
 | **si**​ | crypto signature signed by the user’s Ethereum account for transaction message (tightly packed (no whitespace) stringified json object) |
 
@@ -413,8 +427,8 @@ Response codes (res)
 
 ```json
 {
-   "t" : "CSR",
-   "rqI" : "234234",
+   "t" : "WRR",
+   "rqI" : "345345",
    "r" : {
       "res" : "OK",
       "wrI" : "QmcZgfjBfsTiRv2LrEupDdDqgfXdwLSfUVJhFjQZn6u2XY",
@@ -443,7 +457,7 @@ Response codes (res)
 * SettlementDataSaveFailed
 * AlreadyProcessed
 * NoETHAccount
-* NotEnoughASD
+* NotEnoughTradingCurrency
 * NotEnoughToken
 * AccountLocked
 * WithdrawalInProgress
@@ -459,44 +473,44 @@ Response codes (res)
    "doc":"WS",
    "tsS":1508401523214,
    "ea":"0x5677e23889387f0d0e774f2e930e91bcee9dcaa6",
-   "sy":"ASD",
+   "sy":"TC",
    "am":"3000000000",
    "txF":"500000",
    "wrI":"QmcZgfjBfsTiRv2LrEupDdDqgfXdwLSfUVJhFjQZn6u2XY",
    "cTxS":734,
    "cAB":{  
-      "a":"2974937693000",
-      "aE":"10960950000",
+      "c":"2974937693000",
+      "cL":"10960950000",
       "ATs":[  
          {  
             "s":"AS_GH_SN",
-            "t":"10",
-            "tE":"0",
-            "aE":"0"
+            "t":"1000000000",
+            "tL":"0",
+            "acL":"0"
          },
          {  
             "s":"AS_AG_WM",
-            "t":"100",
-            "tE":"0",
-            "aE":"0"
+            "t":"10000000000",
+            "tL":"0",
+            "acL":"0"
          },
          {  
             "s":"AS_RL_WH",
-            "t":"300",
-            "tE":"0",
-            "aE":"0"
+            "t":"30000000000",
+            "tL":"0",
+            "acL":"0"
          },
          {  
             "s":"AS_PC_GN",
-            "t":"120",
-            "tE":"0",
-            "aE":"0"
+            "t":"12000000000",
+            "tL":"0",
+            "acL":"0"
          },
          {  
             "s":"AS_DH_LG",
             "t":"0",
-            "tE":"0",
-            "aE":"10960950000"
+            "tL":"0",
+            "acL":"10960950000"
          }
       ],
       "OOs":[  
@@ -504,11 +518,13 @@ Response codes (res)
             "Xt":"OB",
             "Xsy":"AS_DH_LG",
             "Xp":"36500000",
-            "Xta":"300",
+            "Xta":"30000000000",
             "Oi":"QmTYrcppMS4ub9rF63EPN2rvkrZA7UkmwWEKH95H2BYmFX",
             "OmF":10,
             "OtF":20,
-            "Ouf":"300"
+            "Ouf":"30000000000",
+            "OicL":"",
+            "OcL":""
          }
       ]
    },
@@ -516,7 +532,7 @@ Response codes (res)
       {  
          "Xt":"W",
          "Xs":623,
-         "Xsy":"ASD",
+         "Xsy":"TC",
          "Xts":1504094280444,
          "Xta":"3000000000",
          "Wi":"QmYkwS3S7qBgXJYWmX3m19Uv2YmocW4Hvwo9ayVK1PWm3e",
@@ -532,12 +548,14 @@ Response codes (res)
          "Xsy":"AS_AG_WM",
          "Xts":1504627218290,
          "Xp":"13500000",
-         "Xta":"100",
+         "Xta":"10000000000",
          "Oi":"QmT1rpn42bum5URhmHRR1Zaty57kM7mcgGH7kEBRjiXTRp",
          "OmF":10,
          "OtF":20,
          "Ots":1504627216428,
-         "Osi":"0xc5a96a106e58bb543a73e0dabe977322d2cb6d4dd9b8c3d1d7bd8559a48166873fe3bb57e286164c737768adeb16cde512a8c63ed89f0cac484e60d43c1ed25f1c"
+         "Osi":"0xc5a96a106e58bb543a73e0dabe977322d2cb6d4dd9b8c3d1d7bd8559a48166873fe3bb57e286164c737768adeb16cde512a8c63ed89f0cac484e60d43c1ed25f1c",
+         "OicL":"",
+         "OcL":""
       },
       {  
          "Xt":"T",
@@ -545,11 +563,12 @@ Response codes (res)
          "Xsy":"AS_AG_WM",
          "Xts":1504627218290,
          "Xp":"13500000",
-         "Xta":"100",
+         "Xta":"10000000000",
          "Ti":"QmYfj7THttNwCmE8RQ1zAaW5bsTRLujcVPKxKUHmk3hY1D",
          "TbI":"QmT1rpn42bum5URhmHRR1Zaty57kM7mcgGH7kEBRjiXTRp",
          "TsI":"QmSmZKYpmTcCJgT48MW4qFVJfYVgPYsanjo5wWV89vxvNs",
          "Tty":"B",
+         "TcT":"",
          "Tmt":"T",
          "Tf":"2700000"
       },
@@ -559,24 +578,27 @@ Response codes (res)
          "Xsy":"AS_PC_GN",
          "Xts":1504795447954,
          "Xp":"52100000",
-         "Xta":"50",
+         "Xta":"5000000000",
          "Oi":"QmdChdLRoCQi5BjfSG3QXvgHW5rLAGsqUJVcpAbX3QZ9Sp",
          "OmF":10,
          "OtF":20,
          "Ots":1504795445476,
-         "Osi":"0xd88776a935a36b81f20957741521a913b2f1cba101c352ea4bf7d6e91d98c44a7fcb06cce53fca1cecd7cbacc32696db78908f82bc6c5b3a6ff0759e77c54e381c"
+         "Osi":"0xd88776a935a36b81f20957741521a913b2f1cba101c352ea4bf7d6e91d98c44a7fcb06cce53fca1cecd7cbacc32696db78908f82bc6c5b3a6ff0759e77c54e381c",
+         "OicL":"",
+         "OcL":""
       },
-      {  
+      {
          "Xt":"T",
          "Xs":660,
          "Xsy":"AS_PC_GN",
          "Xts":1504795447954,
          "Xp":"52100000",
-         "Xta":"50",
+         "Xta":"5000000000",
          "Ti":"QmYH1FsPTJbJgShtBMUBZiRQ8csqyhD31MtChdVQUSVM5g",
          "TbI":"QmdChdLRoCQi5BjfSG3QXvgHW5rLAGsqUJVcpAbX3QZ9Sp",
          "TsI":"QmZr5rvj51nTKfiU9FqqA3pG11Fov5fptwctswgJ4ANfeg",
          "Tty":"B",
+         "TcT":"",
          "Tmt":"T",
          "Tf":"5210000"
       },
@@ -586,12 +608,14 @@ Response codes (res)
          "Xsy":"AS_PC_GN",
          "Xts":1504796042497,
          "Xp":"52100000",
-         "Xta":"20",
+         "Xta":"2000000000",
          "Oi":"QmRqTu7a2is2ny1JM2rygugX5e5dcmBnsjgsc4SitdbacX",
          "OmF":10,
          "OtF":20,
          "Ots":1504796039932,
-         "Osi":"0x8cc4724038f6e000573019f9538dee5f1dfff1049ab7df053524da9609b2cd7a37e3a243456e5a8984e735307b19540801c4f0db48cce7fa75b23514e60ddc511c"
+         "Osi":"0x8cc4724038f6e000573019f9538dee5f1dfff1049ab7df053524da9609b2cd7a37e3a243456e5a8984e735307b19540801c4f0db48cce7fa75b23514e60ddc511c",
+         "OicL":"",
+         "OcL":""
       },
       {  
          "Xt":"T",
@@ -599,11 +623,12 @@ Response codes (res)
          "Xsy":"AS_PC_GN",
          "Xts":1504796042497,
          "Xp":"52100000",
-         "Xta":"20",
+         "Xta":"2000000000",
          "Ti":"QmX3HxZJLs8A19BJQXHaKA9HZ9wbTEH3rFJE1FDdqWzDbQ",
          "TbI":"QmRqTu7a2is2ny1JM2rygugX5e5dcmBnsjgsc4SitdbacX",
          "TsI":"QmZr5rvj51nTKfiU9FqqA3pG11Fov5fptwctswgJ4ANfeg",
          "Tty":"B",
+         "TcT":"",
          "Tmt":"T",
          "Tf":"2084000"
       },
@@ -613,7 +638,7 @@ Response codes (res)
          "Xsy":"AS_RL_WH",
          "Xts":1506117600712,
          "Xp":"11000000",
-         "Xta":"300",
+         "Xta":"30000000000",
          "Oi":"QmPH9dygt6JvaEfVKvAPbsnofn6aWpbVwinSLsLH2qXsrV",
          "OmF":10,
          "OtF":20,
@@ -626,10 +651,11 @@ Response codes (res)
          "Xsy":"AS_RL_WH",
          "Xts":1506117600712,
          "Xp":"11000000",
-         "Xta":"300",
+         "Xta":"30000000000",
          "Ti":"QmZvfEuP6XaT9Ze4EjtsZ1aZqT15ErxM5ryRE7vEu8HGNL",
          "TbI":"QmPH9dygt6JvaEfVKvAPbsnofn6aWpbVwinSLsLH2qXsrV",
          "TsI":"QmYH2gPug9yDXCeoWgdRnKuLwMPz9RwqwDSqWCansgMVvJ",
+         "TcT":"",
          "Tty":"B",
          "Tmt":"T",
          "Tf":"6600000"
@@ -640,30 +666,32 @@ Response codes (res)
          "Xsy":"AS_DH_LG",
          "Xts":1506118070953,
          "Xp":"36500000",
-         "Xta":"300",
+         "Xta":"30000000000",
          "Oi":"QmTYrcppMS4ub9rF63EPN2rvkrZA7UkmwWEKH95H2BYmFX",
          "OmF":10,
          "OtF":20,
          "Ots":1506118068248,
-         "Osi":"0x48b168f25e17fd6f262cb93eee33b41255e6d0dd539ea7044bb5d94e9a4d3cbe2ab788e90552d3eabd0615fadba28f932ea886c86620b951a9a6b2a1a1a0510d1c"
+         "Osi":"0x48b168f25e17fd6f262cb93eee33b41255e6d0dd539ea7044bb5d94e9a4d3cbe2ab788e90552d3eabd0615fadba28f932ea886c86620b951a9a6b2a1a1a0510d1c",
+         "OicL":"",
+         "OcL":""
       }
    ],
    "pTxS":622,
    "pAB":{  
-      "a":"2997212737000",
-      "aE":"0",
+      "c":"2997212737000",
+      "cL":"0",
       "ATs":[  
          {  
             "s":"AS_GH_SN",
             "t":"10",
-            "tE":"0",
-            "aE":"0"
+            "tL":"0",
+            "acL":"0"
          },
          {  
             "s":"AS_PC_GN",
             "t":"50",
-            "tE":"0",
-            "aE":"0"
+            "tL":"0",
+            "acL":"0"
          }
       ],
       "OOs":[
@@ -677,12 +705,13 @@ Response codes (res)
 | :---: | --- |
 | **cTxs** | current transaction sequence |
 | **cAB** | current account balances |
-| **a​** | dUSD balance |
-| **aE** | dUSD escrowed |
-| **ATs** | Asset-Share tokens |
-| **s** | symbol |
+| **c​** | trading currency balance |
+| **cL** | trading currency amount locked (escrowed) |
+| **ATs** | Asset Token wallets |
+| **s** | token symbol |
 | **t​** | token amount |
-| **tE​** | token escrowed |
+| **tL** | token locked (escrowed) |
+| **acL** | trading currency amount locked (escrowed) in this asset token trading |
 | **OOs** | open orders |
 | **TXs​** | transactions |
 | **Xt** | transaction type |
@@ -786,7 +815,7 @@ Response codes (res)
     "xa" : "0x33e50109a188cdbf976c60fb93e34119cba0a088",
     "tt" : "WC",
     "ea" : "0x5677e23889387f0d0e774f2e930e91bcee9dcaa6",
-    "sy" : "ASD",
+    "sy" : "TC",
     "am" : "3000000000",
     "txF" : "500000",
     "wrI" : "QmTvVrXNyQdsMBb5pG8vFDzE61e3dKfe5eofR3yPD6peV9",
@@ -803,9 +832,9 @@ Response codes (res)
 | **xa**​ | exchange Ethereum smart contract address (Exchange Vault) identifying the exchange server |
 | **tt**​ | transaction type (‘OB’ : Order Buy, ‘OS’ : Order Sell, ‘TB’ : Trade-Buy, ‘TS’ : Trade-Sell, ‘CB’ : Cancel-Buy, ‘CS’ : Cancel-Sell, ‘WR’ : Withdrawal-Request, ‘CWR’ : Cancel-Withdrawal-Request, ‘WC’ : Withdrawal-Confirm) |
 | **ea​** | user’s Ethereum account address |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) or ‘dUSD’ |
-| **am**​ | Asset-Share token amount or dUSD amount (6 decimals big integer, 1 dUSD = 1000000, 30.5 dUSD = 30500000) |
-| **txF** | transaction fee dUSD amount in a Withdrawal-Request transaction (6 decimals big integer) |
+| **sy**​ | Asset token symbol (id for an Asset token type) or ‘TC’(Trading Currency) |
+| **am**​ | Asset token amount or trading currency amount |
+| **txF** | transaction fee trading currency amount in a Withdrawal-Request transaction |
 | **wrI** | withdrawal-request id in a Cancel-Withdrawal-Request or Withdrawal-Confirm transaction |
 | **wrTs** | withdrawal-request timestamp |
 | **wsI** | withdrawal-settlement-data file hash id |
@@ -874,9 +903,9 @@ Ethereum account address parameter is implicit by websocket connection
     "res" : "OK",
     "st" : "WX",
     "wrI" : "QmNfB5sWGgqA4MefrDBoHa2pvEvx6tEKXRAeb2zNnV9CVd",
-    "sy":"ASD",
+    "sy":"TC",
     "ta" : "2000000000",
-    "txF":"500000",
+    "txF" : "500000",
     "ts" : 1508728224481,
     "si" : "0xdd6ef3c5a0bed391f94412da5d63e6cff623965c3bbccebdbd51d4414ecf79145b39b21d3713b61913b474d3355b106a42cd45e7c1f1acea5c37e91492347b981b",
     "wsI" : "QmRcJAXHUV1CgSRrxNTgWWbzGUzMHu4Uv4QyvF8tS8YEsC",
@@ -890,9 +919,9 @@ Ethereum account address parameter is implicit by websocket connection
 | **st** | null : no withdrawal in progress, 'WR' : in withdrawal request status, 'WX' : withdrawal Ethereum transaction in progress |
 | **wI** | withdrawal id (IPFS hash address of withdrawal-confirm message json file) |
 | **wrI** | withdrawal-request id in a Cancel-Withdrawal-Request or Withdrawal-Confirm transaction |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) or ‘dUSD’ |
-| **ta**​ | Asset-Share token amount or dUSD amount (6 decimals big integer, 1 dUSD = 1000000, 30.5 dUSD = 30500000) |
-| **txF** | transaction fee dUSD amount in a Withdrawal-Request transaction (6 decimals big integer) |
+| **sy**​ | Asset token symbol (id for an Asset token type) or ‘TC’(Trading Currency) |
+| **ta**​ | Asset token amount or trading currency amount |
+| **txF** | transaction fee trading currency amount in a Withdrawal-Request transaction |
 | **ts** | withdrawal request timestamp |
 | **si** | crypto signature of withdrawal request |
 | **wsI** | withdrawal-settlement-data file hash id |
@@ -928,16 +957,16 @@ Ethereum account address parameter is implicit by websocket connection
   "r" : {
     "res" : "OK",
     "st" : "WX",
-    "asd" : "2975216135000",
-    "asdE" : "10960950000"
+    "c" : "2975216135000",
+    "cL" : "10960950000"
   }
 }
 ```
 
 | field | description |
 | :---: | --- |
-| **asd** | trading currency amount (dUSD, 6 decimals big integer, 1 dUSD = 1000000, 30.5 dUSD = 30500000) |
-| **asdE** | trading currency amount locked(escrowed) in user's open orders |
+| **c** | trading currency amount |
+| **cL** | trading currency amount locked(escrowed) in user's open orders |
 
 Response codes (res)
 * NoETHAccount
@@ -959,7 +988,7 @@ Response codes (res)
 
 | field | description |
 | :---: | --- |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) |
+| **sy**​ | Asset token symbol (id for an Asset token type) |
 
 Ethereum account address parameter is implicit by websocket connection
 
@@ -972,24 +1001,24 @@ Ethereum account address parameter is implicit by websocket connection
   "r" : {
     "res" : "OK",
     "st" : "WX",
-    "asd" : "2975216135000",
-    "asdE" : "10960950000",
-    "asdF" : "1000000000000",
-    "token" : 115,
-    "tokenE" : 20,
-    "tokenASDE":"312500000"
+    "c" : "2975216135000",
+    "cL" : "10960950000",
+    "cF" : "1000000000000",
+    "a" : "11500000000",
+    "aL" : "2000000000",
+    "acL" : "312500000"
   }
 }
 ```
 
 | field | description |
 | :---: | --- |
-| **asd** | trading currency amount available (dUSD, 6 decimals big integer, 1 dUSD = 1000000, 30.5 dUSD = 30500000) |
-| **asdE** | trading currency amount locked(escrowed) in user's open orders |
-| **asdF** | (alpha version only) trading currency amount issued to this account through free faucet |
-| **token**​ | Asset-Share token amount available |
-| **tokenE**​ | Asset-Share token amount locked(escrowed) in user's open sell order for this asset token |
-| **tokenASDE** | trading currency amount locked(escrowed) in user's open orders for this asset token |
+| **c** | trading currency amount available |
+| **cL** | trading currency amount locked(escrowed) in user's open orders |
+| **cF** | (alpha version only) trading currency amount issued to this account through free faucet |
+| **a**​ | Asset token amount available |
+| **aL**​ | Asset token amount locked(escrowed) in user's open sell order for this asset token |
+| **acL** | trading currency amount locked(escrowed) in user's open orders for this asset token |
 
 Response codes (res)
 * NoETHAccount
@@ -1011,7 +1040,7 @@ Response codes (res)
 
 | field | description |
 | :---: | --- |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type), if 'sy' field is not specified, all open orders for the every asset tokens will be returned |
+| **sy**​ | Asset token symbol (id for an Asset token type), if 'sy' field is not specified, all open orders for the every asset tokens will be returned |
 
 Ethereum account address parameter is implicit by websocket connection
 
@@ -1029,9 +1058,9 @@ Ethereum account address parameter is implicit by websocket connection
         "sy" : "AS_DH_LG",
         "ty" : "B",
         "p" : "36500000",
-        "t" : 300,
-        "uf" : 300,
-        "aDE" : "10960950000",
+        "t" : "30000000000",
+        "uf" : "30000000000",
+        "cL" : "10960950000",
         "ts" : 1506118070953
       }
     ]
@@ -1045,10 +1074,10 @@ Ethereum account address parameter is implicit by websocket connection
 | **id** | (buy/sell) order ID (IPFS hash address) |
 | **sy** | asset token symbol (Optional) |
 | **ty** | order type ("B" : Buy, "S" : Sell) |
-| **p** | asset token price in trading currency unit (dUSD, 6 decimals big integer) |
+| **p** | asset token price in trading currency unit |
 | **t** | order asset token amount |
 | **uf** | unfilled asset token amount (support partial order fill) |
-| **aDE** | trading currency amount locked(escrowed) escrowed in this order |
+| **cL** | (Optional) trading currency amount locked(escrowed) in open buy order |
 | **ts** | timestamp of (buy/sell) order |
 
 Response codes (res)
@@ -1072,7 +1101,7 @@ Response codes (res)
 
 | field | description |
 | :---: | --- |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type), if 'sy' field is not specified, all trading history for the every asset tokens will be returned |
+| **sy**​ | Asset token symbol (id for an Asset token type), if 'sy' field is not specified, all trading history for the every asset tokens will be returned |
 
 Ethereum account address parameter is implicit by websocket connection
 
@@ -1089,7 +1118,7 @@ Ethereum account address parameter is implicit by websocket connection
         "id" : "QmSxPYZqFrFpgutiEkJCbeur6SsQG4nHm2UQAErde7DTmu",
         "sy" : "AS_PC_GN",
         "p" : "55800000",
-        "t" : 5,
+        "t" : "500000000",
         "ty" : "S",
         "mt" : "T",
         "f" : "558000",
@@ -1099,7 +1128,7 @@ Ethereum account address parameter is implicit by websocket connection
         "id" : "QmX3HxZJLs8A19BJQXHaKA9HZ9wbTEH3rFJE1FDdqWzDbQ",
         "sy" : "AS_PC_GN",
         "p" : "52100000",
-        "t" : 20,
+        "t" : "2000000000",
         "ty" : "B",
         "mt" : "T",
         "f" : "2084000",
@@ -1115,11 +1144,11 @@ Ethereum account address parameter is implicit by websocket connection
 | **Ts** | trade item array |
 | **id** | trade ID (IPFS hash address of 'trade' transaction data) |
 | **sy** | asset token symbol (Optional) |
-| **p** | Asset-Share token price in trading currency unit (dUSD, 6 decimals big integer) |
+| **p** | Asset token price in trading currency unit |
 | **t** | traded asset token amount |
 | **ty** | trade type ("B" : Buy, "S" : Sell) |
-| **mt** | user's position ("T": Taker, "M": Maker) |
-| **f** |  charged transaction fee amount in trading currency unit(dUSD) |
+| **mt** | user's position ("T": Taker, "M": Maker, "MT": Maker/Taker(user's own token traded)) |
+| **f** |  charged transaction fee amount in trading currency unit |
 | **ts** | timestamp of trade exchange transaction |
 
 Response codes (res)
@@ -1137,10 +1166,12 @@ Response codes (res)
   "bI" : "QmZX5FutrbDkmJiVGyVdeCTpMtE3oHr3ZBdrHaW1Bq8T4K",
   "sI" : "QmQySFBQfu7eASiYFZCL2VXCMjJNsXZfrmwZW1eNNDXUXP",
   "sy" : "AS_PC_GN",
-  "am" : "5",
+  "am" : "500000000",
   "pr" : "55800000",
+  "cT" : "279000000",
   "mf" : "279000",
   "tf" : "558000",
+  "cUB" : "8",
   "tsS" : 1508490827298,
   "siS" : "0xc1033b5c82d9856642a4af667b1cd6e87211635c1fb2666bcaef587059001e685bcb72997d665e3ebf8f4abb6fe64adb076f8057e8ca3dd054612469b40f83b41c"
 }
@@ -1153,11 +1184,13 @@ Response codes (res)
 | **tea** | Ethereum account address of the taker |
 | **bI** | buy-order id (IPFS hash address of buy-order json file) |
 | **sI** | sell-order id (IPFS hash address of sell-order json file) |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) |
-| **am**​ | Asset-Share token amount traded |
-| **pr​** | price in trading currency unit(dUSD) for 1 Asset-Share (6 decimals big integer) |
-| **mf** | charged maker fee amount in trading currency unit(dUSD) |
-| **tf** | charged taker fee amount in trading currency unit(dUSD) |
+| **sy**​ | Asset token symbol (id for an Asset token type) |
+| **am**​ | Asset token amount traded |
+| **pr​** | price in trading currency unit for 1 Asset token |
+| **cT​** | trading currency amount traded |
+| **mf** | charged maker fee amount in trading currency unit |
+| **tf** | charged taker fee amount in trading currency unit |
+| **cUB** | trading currency amount unlocked to the buy order maker as rounding error compensation |
 | **tsS** | server timestamp when the transaction message is made on exchange server |
 | **siS** | crypto signature signed by the exchange server’s Ethereum account for a transaction message |
 
@@ -1182,7 +1215,7 @@ Trading Data APIs
 
 | field | description |
 | :---: | --- |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) |
+| **sy**​ | Asset token symbol (id for an Asset token type) |
 
 > WS Response Message
 
@@ -1196,29 +1229,29 @@ Trading Data APIs
       "bops":[  
          {  
             "p":"55800000",
-            "s":1312
+            "s":"131200000000"
          },
          {  
             "p":"42750000",
-            "s":1056
+            "s":"105600000000"
          },
          {  
             "p":"40780000",
-            "s":2500
+            "s":"250000000000"
          }
       ],
       "sops":[  
          {  
             "p":"63050000",
-            "s":10081
+            "s":"1008100000000"
          },
          {  
             "p":"65090000",
-            "s":50000
+            "s":"5000000000000"
          },
          {  
             "p":"80000000",
-            "s":80000
+            "s":"8000000000000"
          }
       ]
    }
@@ -1230,7 +1263,7 @@ Trading Data APIs
 | **ts** | timestamp of order-book |
 | **bops** | list of Buy-Order prices |
 | **sops** | list of Sell-Order prices |
-| **p** | Asset-Share token price in trading currency unit (dUSD, 6 decimals big integer) |
+| **p** | Asset token price in trading currency unit |
 | **s** | sum of the asset token amounts at a specific token price |
 
 
@@ -1256,7 +1289,7 @@ Response codes (res)
 
 | field | description |
 | :---: | --- |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) |
+| **sy**​ | Asset token symbol (id for an Asset token type) |
 | **ts**​ | (optional) timestamp-before, trade data whose timestamp is before this 'ts' will be returned. (default) return recent trade data |
 | **l** | (optional)(default=10) limit count for returned trade data items
 
@@ -1272,31 +1305,31 @@ Response codes (res)
          {  
             "ty" : "B",
             "p" : "63050000",
-            "t" : 9919,
+            "t" : "991900000000",
             "ts" : 1506316965565
          },
          {  
             "ty" : "B",
             "p" : "59980000",
-            "t" : 200,
+            "t" : "20000000000",
             "ts" : 1506316965565
          },
          {  
             "ty" : "B",
             "p " :"62800000",
-            "t" : 9781,
+            "t" : "978100000000",
             "ts" : 1506316965565
          },
          {  
             "ty" : "B",
             "p" : "57430000",
-            "t" : 100,
+            "t" : "10000000000",
             "ts" : 1506316965565
          },
          {  
             "ty" : "S",
             "p" : "42750000",
-            "t" : 20,
+            "t" : "2000000000",
             "ts" : 1505411757356
          }
       ]
@@ -1308,8 +1341,8 @@ Response codes (res)
 | :---: | --- |
 | **Ts** | list of trade history items |
 | **ty** | trade type ('B': Trade-Buy(taker bought token), 'S': Trade-Sell(taker sold token) |
-| **p** | Asset-Share token price in trading currency unit (dUSD, 6 decimals big integer) |
-| **t**​ | Asset-Share token amount traded |
+| **p** | Asset token price in trading currency unit |
+| **t**​ | Asset token amount traded |
 | **ts** | timestamp of trade transaction |
 
 Response codes (res)
@@ -1332,7 +1365,7 @@ Response codes (res)
 
 | field | description |
 | :---: | --- |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) to subscribe to the asynchronous token trade event data |
+| **sy**​ | Asset token symbol (id for an Asset token type) to subscribe to the asynchronous token trade event data |
 
 Ethereum account address parameter is implicit by websocket connection
 
@@ -1375,7 +1408,7 @@ Response codes (res)
 
 | field | description |
 | :---: | --- |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) to unsubscribe token trade event data |
+| **sy**​ | Asset token symbol (id for an Asset token type) to unsubscribe token trade event data |
 
 Ethereum account address parameter is implicit by websocket connection
 
@@ -1442,7 +1475,7 @@ to all the token event subscribers through active websocket connections that hav
   "e" : {
     "ty" : "OB",
     "p" : "62500000",
-    "t" : "20",
+    "t" : "2000000000",
     "ts" : 1509891166587
   }
 }
@@ -1451,11 +1484,11 @@ to all the token event subscribers through active websocket connections that hav
 | field | description |
 | :---: | --- |
 | **t**​ | Message-Type ('S_TE': Sever-initiated Event - Token Event) |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) |
+| **sy**​ | Asset token symbol (id for an Asset token type) |
 | **e**​ | event data |
 | **ty**​ | token event type ('OB' : Order-Buy) |
-| **p** | Asset-Share token price in trading currency unit (dUSD, 6 decimals big integer) |
-| **t**​ | Asset-Share token amount newly added to buy-order-book |
+| **p** | Asset token price in trading currency unit |
+| **t**​ | Asset token amount newly added to buy-order-book |
 | **ts** | timestamp of buy-order transaction |
 
 
@@ -1470,7 +1503,7 @@ to all the token event subscribers through active websocket connections that hav
   "e" : {
     "ty" : "OS",
     "p" : "62500000",
-    "t" : "50",
+    "t" : "5000000000",
     "ts" : 1509890916450
   }
 }
@@ -1479,11 +1512,11 @@ to all the token event subscribers through active websocket connections that hav
 | field | description |
 | :---: | --- |
 | **t**​ | Message-Type ('S_TE': Sever-initiated Event - Token Event) |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) |
+| **sy**​ | Asset token symbol (id for an Asset token type) |
 | **e**​ | event data |
 | **ty**​ | token event type ('OS' : Order-Sell) |
-| **p** | Asset-Share token price in trading currency unit (dUSD, 6 decimals big integer) |
-| **t**​ | Asset-Share token amount newly added to buy-order-book |
+| **p** | Asset token price in trading currency unit |
+| **t**​ | Asset token amount newly added to buy-order-book |
 | **ts** | timestamp of sell-order transaction |
 
 
@@ -1498,7 +1531,7 @@ to all the token event subscribers through active websocket connections that hav
   "e" : {
     "ty" : "TB",
     "p" : "62500000",
-    "t" : "15",
+    "t" : "1500000000",
     "ts" : 1509891917020
   }
 }
@@ -1507,11 +1540,11 @@ to all the token event subscribers through active websocket connections that hav
 | field | description |
 | :---: | --- |
 | **t**​ | Message-Type ('S_TE': Sever-initiated Event - Token Event) |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) |
+| **sy**​ | Asset token symbol (id for an Asset token type) |
 | **e**​ | event data |
 | **ty**​ | token event type ('TB' : Trade-Buy) |
-| **p** | Asset-Share token price in trading currency unit (dUSD, 6 decimals big integer) |
-| **t**​ | Asset-Share token amount traded |
+| **p** | Asset token price in trading currency unit |
+| **t**​ | Asset token amount traded |
 | **ts** | timestamp of trade transaction |
 
 
@@ -1526,7 +1559,7 @@ to all the token event subscribers through active websocket connections that hav
   "e" : {
     "ty" : "TS",
     "p" : "63700000",
-    "t" : "75",
+    "t" : "7500000000",
     "ts" : 1509896359286
   }
 }
@@ -1535,11 +1568,11 @@ to all the token event subscribers through active websocket connections that hav
 | field | description |
 | :---: | --- |
 | **t**​ | Message-Type ('S_TE': Sever-initiated Event - Token Event) |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) |
+| **sy**​ | Asset token symbol (id for an Asset token type) |
 | **e**​ | event data |
 | **ty**​ | token event type ('TS' : Trade-Sell) |
-| **p** | Asset-Share token price in trading currency unit (dUSD, 6 decimals big integer) |
-| **t**​ | Asset-Share token amount traded |
+| **p** | Asset token price in trading currency unit |
+| **t**​ | Asset token amount traded |
 | **ts** | timestamp of trade transaction |
 
 
@@ -1554,7 +1587,7 @@ to all the token event subscribers through active websocket connections that hav
   "e" : {
     "ty" : "CB",
     "p" : "34790000",
-    "uf" : "180",
+    "uf" : "18000000000",
     "ts" : 1509895438484
   }
 }
@@ -1563,10 +1596,10 @@ to all the token event subscribers through active websocket connections that hav
 | field | description |
 | :---: | --- |
 | **t**​ | Message-Type ('S_TE': Sever-initiated Event - Token Event) |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) |
+| **sy**​ | Asset token symbol (id for an Asset token type) |
 | **e**​ | event data |
 | **ty**​ | token event type ('CB' : Cancel-Buy) |
-| **p** | Asset-Share token price in trading currency unit (dUSD, 6 decimals big integer) |
+| **p** | Asset token price in trading currency unit |
 | **uf** | unfilled token amount |
 | **ts** | timestamp of cancel-buy transaction |
 
@@ -1582,7 +1615,7 @@ to all the token event subscribers through active websocket connections that hav
   "e" : {
     "ty" : "CS",
     "p" : "62500000",
-    "uf" : "15",
+    "uf" : "1500000000",
     "ts" : 1509895600437
   }
 }
@@ -1591,10 +1624,10 @@ to all the token event subscribers through active websocket connections that hav
 | field | description |
 | :---: | --- |
 | **t**​ | Message-Type ('S_TE': Sever-initiated Event - Token Event) |
-| **sy**​ | Asset-Share token symbol (id for an Asset-Share type) |
+| **sy**​ | Asset token symbol (id for an Asset token type) |
 | **e**​ | event data |
 | **ty**​ | token event type ('CS' : Cancel-Sell) |
-| **p** | Asset-Share token price in trading currency unit (dUSD, 6 decimals big integer) |
+| **p** | Asset token price in trading currency unit |
 | **uf** | unfilled token amount |
 | **ts** | timestamp of cancel-sell transaction |
 
@@ -1627,8 +1660,9 @@ through active websocket connections of the relevant Ethereum accounts
       "bI" : "QmabbDLgQ83ZzJe1c8SkgvuDxxAbH4djw1zXZGBQFWZzwA",
       "sI" : "QmWe9bz89dwRVGYELnyfJbwKMSVLvs3dP58biBZPGsbzCn",
       "sy" : "AS_PC_GN",
-      "am" : "15",
+      "am" : "1500000000",
       "pr" : "62500000",
+      "cT" : "937500000",
       "mf" : "937500",
       "tf" : "1875000",
       "tsS" : 1509891917020,
@@ -1669,7 +1703,7 @@ fired when the deposit Ethereum transaction is confirmed
 | **t**​ | Message-Type ('S_AE': Sever-initiated Event - Account Event) |
 | **e**​ | event data |
 | **ty**​ | account event type ('DTC' : Deposit-Trading-Currency) |
-| **am**​ | trading currency amount deposited (dUSD, 6 decimals big integer, 1 dUSD = 1000000, 30.5 dUSD = 30500000) |
+| **am**​ | trading currency amount deposited |
 | **dI** | deposit ID (Ethereum blockchain transaction hash of 'Deposit' transaction) |
 
 
@@ -1685,7 +1719,7 @@ fired when the deposit Ethereum transaction is confirmed
   "e" : {
     "ty" : "DAT",
     "sy" : "AS_PC_GN",
-    "am" : "55",
+    "am" : "5500000000",
     "dI" : "0xd487960fe7bf64bfaa5cba79af322f85248e87e8138efb75e8055ca2dbcc1d45"
   }
 }
@@ -1696,7 +1730,7 @@ fired when the deposit Ethereum transaction is confirmed
 | **t**​ | Message-Type ('S_AE': Sever-initiated Event - Account Event) |
 | **e**​ | event data |
 | **ty**​ | account event type ('DAT' : Deposit-Asset-Token) |
-| **am**​ | Asset-Share token amount deposited |
+| **am**​ | Asset token amount deposited |
 | **dI** | deposit ID (Ethereum blockchain transaction hash of 'Deposit' transaction) |
 
 
@@ -1725,7 +1759,7 @@ fired when the withdrawal Ethereum transaction is confirmed
 | **t**​ | Message-Type ('S_AE': Sever-initiated Event - Account Event) |
 | **e**​ | event data |
 | **ty**​ | account event type ('WTC' : Withdrawal-Trading-Currency) |
-| **am**​ | trading currency amount withdrawn (dUSD, 6 decimals big integer, 1 dUSD = 1000000, 30.5 dUSD = 30500000) |
+| **am**​ | trading currency amount withdrawn |
 | **wrI** | withdrawal request id (IPFS hash address of withdrawal request message json file) |
 | **wI** | withdrawal id (IPFS hash address of withdrawal-confirm message json file) |
 | **wsI** | withdrawal settlement id (IPFS hash address of withdrawal settlement data json file) |
@@ -1744,7 +1778,7 @@ fired when the withdrawal Ethereum transaction is confirmed
   "e" : {
     "ty" : "WAT",
     "sy" : "AS_PC_GN",
-    "am" : "35",
+    "am" : "3500000000",
     "wrI" : "QmQ7hcoFqyWNsmPvZNY8bhSfrbv4GdPCUhL65RpNvhQxGJ",
     "wI" : "Qmb7egrDHcKgksYFpk6Nj5X4X7qrvYydAqsX6R2pSSsqS5",
     "wsI" : "QmafmHnkTX2SoSPWg2cpGxy5DkUAdsBFyKcXbUSBYYr6gA",
@@ -1758,7 +1792,7 @@ fired when the withdrawal Ethereum transaction is confirmed
 | **t**​ | Message-Type ('S_AE': Sever-initiated Event - Account Event) |
 | **e**​ | event data |
 | **ty**​ | account event type ('WAT' : Withdrawal-Asset-Token) |
-| **am**​ | Asset-Share token amount withdrawn |
+| **am**​ | Asset token amount withdrawn |
 | **wrI** | withdrawal request id (IPFS hash address of withdrawal request message json file) |
 | **wI** | withdrawal id (IPFS hash address of withdrawal-confirm message json file) |
 | **wsI** | withdrawal settlement id (IPFS hash address of withdrawal settlement data json file) |
