@@ -6,21 +6,21 @@ Crypto Exchange Websocket API spec
 
 Introduction
 ---
-* If you test Crypto Exchange Websocket API, you must have your own ***ETHEREUM ACCOUNT*** first.
-* All of transactions with Crypto Exchange will be based on your account.
-* For trading tests, you need to have
+* If you test Crypto Exchange Websocket API, you must create your own ***ETHEREUM ACCOUNT*** first.
+  * All of transactions with Crypto Exchange will be based on your account.
+* Furthermore, you should check [***Free faucet***](#Free-Faucet-API) first to get free **DUSD** in order to test trading APIs.
 
 Websocket Test URL
 ---
 * [ws://beta-dev-ma.yosemitelabs.org/ws/ETHEREUM_ADDRESS](ws://beta-dev-ma.yosemitelabs.org/ws/ETHEREUM_ADDRESS)
 * ETHEREUM_ADDRESS must start with 0x
 
-Websocket Test Page (HTTP)
+Websocket Test Pages
 ---
-* test server : [**http://beta-dev-ma.yosemitelabs.org/websocketTest/ETHEREUM_ADDRESS**](http://beta-dev-ma.yosemitelabs.org/websocketTest/ETHEREUM_ADDRESS)
+* server test : [**http://beta-dev-ma.yosemitelabs.org/websocketTest/ETHEREUM_ADDRESS**](http://beta-dev-ma.yosemitelabs.org/websocketTest/ETHEREUM_ADDRESS)
   * eg) [http://beta-dev-ma.yosemitelabs.org/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8](http://beta-dev-ma.yosemitelabs.org/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8)
-* Demo : [**http://crypto-alpha.yosemitex.com/**](http://crypto-alpha.yosemitex.com/)
-  * Demo is an web application, so you need to install either our [***electron-based wallet Picasso***](https://github.com/YosemiteLabs/Picasso/releases) or [***metamask***](https://metamask.io/) at least.
+* demo : [**http://crypto-alpha.yosemitex.com/**](http://crypto-alpha.yosemitex.com/)
+  * demo is a web application, so you need to install either our [***electron-based wallet Picasso***](https://github.com/YosemiteLabs/Picasso/releases) or [***metamask***](https://metamask.io/) at least.
 
 Authentication
 ---
@@ -29,9 +29,25 @@ Authentication
 * currently no authentication for Ethereum account ownership
 * only check whether Ethereum account address string is in valid address format
 * example of websocket connection url for a specific Ethereum account  
-  **ws://alphama.artstockx.com/ws/0x38df6b04c455a7512a71a12f4f03f7bead9774e8**
+  **ws://beta-dev-ma.yosemitelabs.org/ws/0x38df6b04c455a7512a71a12f4f03f7bead9774e8**
+  
+Asset Token Smart Contract Address
+---
+| Asset Token Name | Address |
+| :---: | --- |
+| **C_BTC** | 0x735afa6fc94cd961fcdc946418ecf07bbf989c5e |
+| **C_EOS** | 0xcf0c7339de0bd2cb0f27c4fac5d733a414789d74 |
+| **C_XRP** | 0x4676c4e81b309887d18fff82fcbefe5c1d528e06 |
+| **C_BCH** | 0x91809029bf25b1050a49376bd4b81875932099ac |
+| **C_OMG** | 0xc930f4b4dc8d501ed0636af0a6a3da90f9d7ccfd |
+| **C_ZRX** | 0xe6b4ea558a417b4c4128861665cba45a03a89326 |
+| **C_GNT** | 0x921673f4862ff8c8d08230b8bb145cedc1f8dc4d |
+| **C_SNT** | 0xd49c81a3fae113780e782e7c6ddb75fc94ec0835 |
+| **C_REP** | 0x051fb8ec8e3c5c98a844ab257c274870210f520f |
+| **C_BNT** | 0x5fbe5c7b286cc19055d5877c2ba66ff17d79c109 |
+* In demo, these assets' names are modified without **C_**.
 
-JSON-RPC-style ModernArt Websocket API message convention
+JSON-RPC-style Crypto Exchange Websocket API message convention
 ---
 
 > Request Message Format (Client -> Server)
@@ -108,6 +124,39 @@ Common Websocket Messages
 }
 ```
 
+Free Faucet API
+---
+
+> WS Request Message
+
+```json
+{
+  "t" : "DDTCFF",
+  "rqI" : "asdfwef",
+  "m" : {
+    "am" : '500000000'
+  }
+}
+```
+
+| field | description |
+| :---: | --- |
+| **am**​ | Free Faucet Amount (DUSD, multiplied by 10000(4 digit)) |
+
+> WS Response Message
+
+```json
+{
+  "res" : "OK"
+  "ethTxH" : "0xfee8c07d3b93964e08fd1a10f01b9034cfb9d70ce4290a503e74a51175962eba"
+}
+```
+
+| field | description |
+| :---: | --- |
+| **ethTxH** | blockchain transaction hash for free faucet Ethereum transaction of Exchange Vault smart contract) |
+
+
 Exchange Transaction APIs
 ---
 
@@ -141,7 +190,7 @@ Exchange Transaction APIs
 | **ea​** | user’s Ethereum account address |
 | **sy**​ | Asset token symbol (id for an Asset token type) |
 | **am**​ | Asset token amount |
-| **pr​** | trading currency price for 1 Asset token |
+| **pr​** | trading currency price for 1 crypto token |
 | **mfr**​ | maker fee rate (unit in percentage(0-100) multiplied by 100 (0(0%)-10000(100%), ex: 102 = 1.02%, 10 = 0.1%) |
 | **tfr**​ | taker fee rate (same unit as ‘mfr’) |
 | **ts** | client timestamp at which transaction message is made |
