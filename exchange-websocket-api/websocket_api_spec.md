@@ -134,14 +134,14 @@ Free Faucet API
   "t" : "DDTCFF",
   "rqI" : "asdfwef",
   "m" : {
-    "am" : '500000000'
+    "am" : "500000000"
   }
 }
 ```
 
 | field | description |
 | :---: | --- |
-| **am**​ | Free Faucet Amount (DUSD, multiplied by 10000(4 digit)) |
+| **am** | Free Faucet Amount (DUSD, multiplied by 10000(4 digit)) |
 
 > WS Response Message
 
