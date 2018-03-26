@@ -15,11 +15,15 @@ How to test on server test page
 ---
 * This guide is for testing Crypto Exchange websocket APIs with test page provided together.
 * First, you must have your own ***ETHEREUM ACCOUNT***, because all of transactions with Crypto Exchange will be based on your account.
+  * For the purpose of this server, Crypto Exchange is linked with Rinkeby Test network, not main ethereum network.
+  * For further information about that test network, please check [this link](https://www.rinkeby.io/).
+  * Provided websocket APIs don't require your `ETHER` but it will be required to deposit directly by Ethereum transactions. (Rinkeby provides free ethereum, check [this link](https://faucet.rinkeby.io/)
 * With this account, you can test Crypto Exchange websocket with http://beta-dev-ma.yosemitelabs.org/ws/ETHEREUM_ADDRESS (please modify the `ETHEREUM ADDRESS` to your account)
 * And then you should request [***Free faucet***](#free-faucet-api) to get free **DUSD** in order to test trading APIs.
 * After getting free faucet successfully, you can place your orders.
-  * There are already orderbooks on that server. You can check these orderboos by [***the websocket APIs***](#getorderbook-api-gob) or [***Exchange alpha version***](http://crypto-alpha.yosemitex.com/).
+  * There are already orderbooks on that server. You can check these orderbooks by [***the websocket APIs***](#getorderbook-api-gob) or [***Exchange alpha version***](http://crypto-alpha.yosemitex.com/). Listed tokens can be checked [here](#asset-token-smart-contract-address)
   * Exchange alpha version is web-based, so you need to install either our [***electron-based wallet Picasso***](https://github.com/YosemiteLabs/Picasso/releases) or [***metamask***](https://metamask.io/) at least to make Ethereum transactions.
+* There are also withdrawal and deposit 
 
 Websocket URL
 ---
