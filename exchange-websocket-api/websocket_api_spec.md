@@ -8,7 +8,7 @@ Introduction
 ---
 * If you want to test Crypto Exchange Websocket API, you must create your own ***ETHEREUM ACCOUNT*** first.
   * All of transactions with Crypto Exchange will be based on your account.
-* Furthermore, you should check [***Free faucet***](#free-faucet-api) first to get free **DUSD** in order to test trading APIs.
+* Furthermore, you should check [***Free faucet***](#free-faucet-api) to get free **DUSD** in order to test trading APIs.
 
 Websocket Test URL
 ---
