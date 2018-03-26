@@ -6,7 +6,7 @@ Crypto Exchange Websocket API spec
 
 Introduction
 ---
-* If you test Crypto Exchange Websocket API, you must create your own ***ETHEREUM ACCOUNT*** first.
+* If you want to test Crypto Exchange Websocket API, you must create your own ***ETHEREUM ACCOUNT*** first.
   * All of transactions with Crypto Exchange will be based on your account.
 * Furthermore, you should check [***Free faucet***](#free-faucet-api) first to get free **DUSD** in order to test trading APIs.
 
