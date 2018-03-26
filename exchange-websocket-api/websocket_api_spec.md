@@ -6,11 +6,22 @@ Crypto Exchange Websocket API spec
 
 Introduction
 ---
-* If you want to test Crypto Exchange Websocket API, you must create your own ***ETHEREUM ACCOUNT*** first.
-  * All of transactions with Crypto Exchange will be based on your account.
-* Furthermore, you should check [***Free faucet***](#free-faucet-api) to get free **DUSD** in order to test trading APIs.
+* These Websocket APIs are provided by Crypto Exchange.
+* [**Alpha version**](http://crypto-alpha.yosemitex.com/) is also working on the same Websocket APIs,
+  and some of smart contracts functions such as `transfer`.
+* If you want to test the Websocket APIs, please check [***How to test on server test page***](#how-to-test-on-server-test-page) first and then apply these APIs with [***Websocket URL***](#websocket-url) to your service.
 
-Websocket Test URL
+How to test on server test page
+---
+* This guide is for testing Crypto Exchange websocket APIs with test page provided together.
+* First, you must have your own ***ETHEREUM ACCOUNT***, because all of transactions with Crypto Exchange will be based on your account.
+* With this account, you can test Crypto Exchange websocket with http://beta-dev-ma.yosemitelabs.org/ws/ETHEREUM_ADDRESS (please modify the `ETHEREUM ADDRESS` to your account)
+* And then you should request [***Free faucet***](#free-faucet-api) to get free **DUSD** in order to test trading APIs.
+* After getting free faucet successfully, you can place your orders.
+  * There are already orderbooks on that server. You can check these orderboos by [***the websocket APIs***](#getorderbook-api-gob) or [***Exchange alpha version***](http://crypto-alpha.yosemitex.com/).
+  * Exchange alpha version is web-based, so you need to install either our [***electron-based wallet Picasso***](https://github.com/YosemiteLabs/Picasso/releases) or [***metamask***](https://metamask.io/) at least to make Ethereum transactions.
+
+Websocket URL
 ---
 * [ws://beta-dev-ma.yosemitelabs.org/ws/ETHEREUM_ADDRESS](ws://beta-dev-ma.yosemitelabs.org/ws/ETHEREUM_ADDRESS)
 * ETHEREUM_ADDRESS must start with 0x
