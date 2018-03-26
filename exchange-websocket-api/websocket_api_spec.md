@@ -33,7 +33,7 @@ Authentication
   
 Asset Token Smart Contract Address
 ---
-| Asset Token Name | Address |
+| Asset Token | Address |
 | :---: | --- |
 | **C_BTC** | 0x735afa6fc94cd961fcdc946418ecf07bbf989c5e |
 | **C_EOS** | 0xcf0c7339de0bd2cb0f27c4fac5d733a414789d74 |
