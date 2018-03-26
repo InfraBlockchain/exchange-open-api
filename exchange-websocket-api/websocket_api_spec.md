@@ -45,7 +45,7 @@ Asset Token Smart Contract Address
 | **C_SNT** | 0xd49c81a3fae113780e782e7c6ddb75fc94ec0835 |
 | **C_REP** | 0x051fb8ec8e3c5c98a844ab257c274870210f520f |
 | **C_BNT** | 0x5fbe5c7b286cc19055d5877c2ba66ff17d79c109 |
-* In demo, these assets' names are modified without **C_**.
+* In demo, these assets' names are displayed without **C_**.
 
 JSON-RPC-style Crypto Exchange Websocket API message convention
 ---
