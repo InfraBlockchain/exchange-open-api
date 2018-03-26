@@ -17,7 +17,7 @@ How to test on server test page
 * First, you must have your own ***ETHEREUM ACCOUNT***, because all of transactions with Crypto Exchange will be based on your account.
   * For the purpose of this server, Crypto Exchange is linked with Rinkeby Test network, not main ethereum network.
   * For further information about that test network, please check [this link](https://www.rinkeby.io/).
-  * Provided websocket APIs don't require your `ETHER` but it will be required to deposit directly by Ethereum transactions. (Rinkeby provides free ethereum, check [this link](https://faucet.rinkeby.io/)
+  * Provided websocket APIs don't require your `ETHER` but it will be required to deposit directly by Ethereum transactions. (Rinkeby provides free ethereum, check [this link](https://faucet.rinkeby.io/))
 * With this account, you can test Crypto Exchange websocket with http://beta-dev-ma.yosemitelabs.org/ws/ETHEREUM_ADDRESS (please modify the `ETHEREUM ADDRESS` to your account)
 * And then you should request [***Free faucet***](#free-faucet-api) to get free **DUSD** in order to test trading APIs.
 * After getting free faucet successfully, you can place your orders.
