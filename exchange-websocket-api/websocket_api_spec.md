@@ -1,26 +1,19 @@
-ModernArt Websocket API spec
+Crypto Exchange Websocket API spec
 ===
 (revision 20171116)
 
 #### **_akka-actor-based event-driven exchange server cluster implementation_**
 
-Websocket URL
----
-  * ws://`<address`>:`<port`>/ws/ETHEREUM_ADDRESS
-  * ETHEREUM_ADDRESS must start with 0x
 
 Websocket Test URL
 ----
-  * [ws://alphama.artstockx.com/ws/ETHEREUM_ADDRESS](ws://alphama.artstockx.com/ws/ETHEREUM_ADDRESS)
   * [ws://beta-dev-ma.yosemitelabs.org/ws/ETHEREUM_ADDRESS](ws://beta-dev-ma.yosemitelabs.org/ws/ETHEREUM_ADDRESS)
+  * ETHEREUM_ADDRESS must start with 0x
 
 Websocket Test Page (HTTP)
 ---
-
-* test server : [**http://alphama.artstockx.com/websocketTest/ETHEREUM_ADDRESS**](http://alphama.artstockx.com/websocketTest/ETHEREUM_ADDRESS)
 * test server : [**http://beta-dev-ma.yosemitelabs.org/websocketTest/ETHEREUM_ADDRESS**](http://beta-dev-ma.yosemitelabs.org/websocketTest/ETHEREUM_ADDRESS)
-* eg) [http://alphama.artstockx.com/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8](http://alphama.artstockx.com/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8)
-* eg) [http://beta-dev-ma.yosemitelabs.org/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8](http://alphama.artstockx.com/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8)
+* eg) [http://beta-dev-ma.yosemitelabs.org/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8](http://beta-dev-ma.yosemitelabs.org/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8)
 
 Authentication
 ---
