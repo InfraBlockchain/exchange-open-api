@@ -1,19 +1,26 @@
 Crypto Exchange Websocket API spec
 ===
-(revision 20171116)
+(revision 20180326)
 
 #### **_akka-actor-based event-driven exchange server cluster implementation_**
 
+Introduction
+---
+* If you test Crypto Exchange Websocket API, you must have your own ***ETHEREUM ACCOUNT*** first.
+* All of transactions with Crypto Exchange will be based on your account.
+* For trading tests, you need to have
 
 Websocket Test URL
-----
-  * [ws://beta-dev-ma.yosemitelabs.org/ws/ETHEREUM_ADDRESS](ws://beta-dev-ma.yosemitelabs.org/ws/ETHEREUM_ADDRESS)
-  * ETHEREUM_ADDRESS must start with 0x
+---
+* [ws://beta-dev-ma.yosemitelabs.org/ws/ETHEREUM_ADDRESS](ws://beta-dev-ma.yosemitelabs.org/ws/ETHEREUM_ADDRESS)
+* ETHEREUM_ADDRESS must start with 0x
 
 Websocket Test Page (HTTP)
 ---
 * test server : [**http://beta-dev-ma.yosemitelabs.org/websocketTest/ETHEREUM_ADDRESS**](http://beta-dev-ma.yosemitelabs.org/websocketTest/ETHEREUM_ADDRESS)
-* eg) [http://beta-dev-ma.yosemitelabs.org/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8](http://beta-dev-ma.yosemitelabs.org/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8)
+ * eg) [http://beta-dev-ma.yosemitelabs.org/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8](http://beta-dev-ma.yosemitelabs.org/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8)
+* Demo : [**http://crypto-alpha.yosemitex.com/**](http://crypto-alpha.yosemitex.com/)
+ * Demo is an web application, so you need to install either our [***electron-based wallet Picasso***](https://github.com/YosemiteLabs/Picasso/releases) or [***metamask***](https://metamask.io/) at least.
 
 Authentication
 ---
