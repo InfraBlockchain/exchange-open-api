@@ -18,9 +18,9 @@ Websocket Test URL
 Websocket Test Page (HTTP)
 ---
 * test server : [**http://beta-dev-ma.yosemitelabs.org/websocketTest/ETHEREUM_ADDRESS**](http://beta-dev-ma.yosemitelabs.org/websocketTest/ETHEREUM_ADDRESS)
- * eg) [http://beta-dev-ma.yosemitelabs.org/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8](http://beta-dev-ma.yosemitelabs.org/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8)
+  * eg) [http://beta-dev-ma.yosemitelabs.org/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8](http://beta-dev-ma.yosemitelabs.org/websocketTest/0x38df6b04c455a7512a71a12f4f03f7bead9774e8)
 * Demo : [**http://crypto-alpha.yosemitex.com/**](http://crypto-alpha.yosemitex.com/)
- * Demo is an web application, so you need to install either our [***electron-based wallet Picasso***](https://github.com/YosemiteLabs/Picasso/releases) or [***metamask***](https://metamask.io/) at least.
+  * Demo is an web application, so you need to install either our [***electron-based wallet Picasso***](https://github.com/YosemiteLabs/Picasso/releases) or [***metamask***](https://metamask.io/) at least.
 
 Authentication
 ---
