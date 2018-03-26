@@ -23,7 +23,7 @@ How to test on server test page
 * After getting free faucet successfully, you can place your orders.
   * There are already orderbooks on that server. You can check these orderbooks by [***the websocket APIs***](#getorderbook-api-gob) or [***Exchange alpha version***](http://crypto-alpha.yosemitex.com/). Listed tokens can be checked [here](#asset-token-smart-contract-address)
   * Exchange alpha version is web-based, so you need to install either our [***electron-based wallet Picasso***](https://github.com/YosemiteLabs/Picasso/releases) or [***metamask***](https://metamask.io/) at least to make Ethereum transactions.
-* There are also withdrawal and deposit 
+* There are also APIs related to withdrawal and deposit requests, so you can withdrawal tokens after trading successfully including **DUSD**.
 
 Websocket URL
 ---
